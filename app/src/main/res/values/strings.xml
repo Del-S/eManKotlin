@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Test</string>
+
+    <!-- Bottom menu -->
+    <string name="app_menu_questions">Questions</string>
+    <string name="app_menu_settings">Settings</string>
+
+    <!-- Item Question -->
+    <string name="iq_title">Title</string>
+    <string name="iq_owner_name">Owner name</string>
+
+    <!-- Fragment Questions List -->
+    <string name="fql_search">Search</string>
+    <string name="fql_empty">No questions found.</string>
+</resources>
