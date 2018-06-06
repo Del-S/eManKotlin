@@ -16,4 +16,17 @@
     <!-- Fragment Questions List -->
     <string name="fql_search">Search</string>
     <string name="fql_empty">No questions found.</string>
+
+    <!-- Activity settings -->
+    <string name="as_additional_information_title">Additional information</string>
+    <string name="as_quota_title">Quota for API calls</string>
+    <string name="as_quota_description">API is limited based on documents downloaded. Shows how many can be downloaded.</string>
+    <string name="as_quota_value_dummy">0 of 0</string>
+    <string name="as_api_settings_title">API settings</string>
+    <string name="as_api_page_size_title">Page size</string>
+    <string name="as_api_page_size_description">Sets how many documents is downloaded per API run.</string>
+    <string name="as_api_page_size_dummy">0</string>
+    <string name="as_api_page_title">Current page</string>
+    <string name="as_api_page_description">Sets how many documents is downloaded per API run. Note that this changes paging and you may receive duplicate data.</string>
+    <string name="as_api_page_dummy">1</string>
 </resources>

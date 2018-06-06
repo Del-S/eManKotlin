@@ -13,15 +13,13 @@ import cz.eman.test.BaseActivity
 import cz.eman.test.R
 import cz.eman.test.activities.QuestionsInterface
 import cz.eman.test.api.ApiActions
-import cz.eman.test.api.ApiResultInterface
 import cz.eman.test.model.Question
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_question.*
 import java.util.*
 
 class QuestionsAdapter(private val mActivity: FragmentActivity?) :
-        RecyclerView.Adapter<QuestionsAdapter.ViewHolder>(), Filterable,
-        ApiResultInterface {
+        RecyclerView.Adapter<QuestionsAdapter.ViewHolder>(), Filterable {
 
     private val mInflater: LayoutInflater = LayoutInflater.from(mActivity)  // Inflater to inflate views with
     private val mQuestions:MutableList<Question> = ArrayList()
@@ -38,15 +36,12 @@ class QuestionsAdapter(private val mActivity: FragmentActivity?) :
         }
     }
 
-    override fun displayQuestions(questions: MutableList<Question>?) {
+    fun displayQuestions(questions: MutableList<Question>?) {
         mQuestionsFiltered.clear()
 
         if (questions != null) {
-            Log.d("Test", "Questions size: ${mQuestions.size}")
             mQuestions.addAll(questions)
-            Log.d("Test", "Questions size after update: ${mQuestions.size}")
             mQuestionsFiltered.addAll(mQuestions)
-            Log.d("Test", "Questions filtered size after update: ${mQuestionsFiltered.size}")
             notifyDataSetChanged()
         }
     }
