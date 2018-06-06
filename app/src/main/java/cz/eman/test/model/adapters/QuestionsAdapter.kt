@@ -1,34 +1,52 @@
 package cz.eman.test.model.adapters
 
+import android.os.Build
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.RecyclerView
+import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import cz.eman.test.BaseActivity
 import cz.eman.test.R
+import cz.eman.test.activities.QuestionsInterface
+import cz.eman.test.api.ApiActions
+import cz.eman.test.api.ApiResultInterface
 import cz.eman.test.model.Question
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_question.*
+import java.util.*
 
 class QuestionsAdapter(private val mActivity: FragmentActivity?) :
-        RecyclerView.Adapter<QuestionsAdapter.ViewHolder>(), Filterable {
+        RecyclerView.Adapter<QuestionsAdapter.ViewHolder>(), Filterable,
+        ApiResultInterface {
 
     private val mInflater: LayoutInflater = LayoutInflater.from(mActivity)  // Inflater to inflate views with
     private val mQuestions:MutableList<Question> = ArrayList()
     private var mQuestionsFiltered:MutableList<Question> = ArrayList()
+    private var mActivityInterface: QuestionsInterface? = null
+    private val mApiActions = ApiActions.instance
 
     init {
-
+        // Initiate callback connection to the activity or throw an Exception
+        try {
+            mActivityInterface = mActivity as QuestionsInterface
+        } catch (e: Exception) {
+            throw ClassCastException(mActivity!!.javaClass.name + " must implement QuestionsInterface")
+        }
     }
 
-    fun addQuestions(questions: MutableList<Question>?) {
+    override fun displayQuestions(questions: MutableList<Question>?) {
         mQuestionsFiltered.clear()
 
         if (questions != null) {
+            Log.d("Test", "Questions size: ${mQuestions.size}")
             mQuestions.addAll(questions)
-            mQuestionsFiltered = mQuestions
+            Log.d("Test", "Questions size after update: ${mQuestions.size}")
+            mQuestionsFiltered.addAll(mQuestions)
+            Log.d("Test", "Questions filtered size after update: ${mQuestionsFiltered.size}")
             notifyDataSetChanged()
         }
     }
@@ -46,8 +64,15 @@ class QuestionsAdapter(private val mActivity: FragmentActivity?) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val question = mQuestionsFiltered[position]
 
-        holder.bind(question.title,
-                question.owner?.displayName)
+        holder.bind(
+                decodeHtmlString(question.title),
+                question.owner?.displayName,
+                createDateString(question.creationDate))
+
+        holder.itemView.setOnClickListener({mActivityInterface?.onQuestionClick(question.id)})
+
+        if(position >= (mQuestions.size - 1))
+            mApiActions.downloadQuestions(this::displayQuestions)
     }
 
     override fun getFilter(): Filter {
@@ -55,9 +80,9 @@ class QuestionsAdapter(private val mActivity: FragmentActivity?) :
             override fun performFiltering(charSequence: CharSequence): Filter.FilterResults {
                 // Get filter string
                 val charString = charSequence.toString()
-                if (charString.isEmpty()) {
+                mQuestionsFiltered = if (charString.isEmpty()) {
                     // Return original list
-                    mQuestionsFiltered = mQuestions
+                    mQuestions
                 } else {
                     val filteredList = ArrayList<Question>()
                     for (question in mQuestions) {
@@ -68,7 +93,7 @@ class QuestionsAdapter(private val mActivity: FragmentActivity?) :
                         }
                     }
 
-                    mQuestionsFiltered = filteredList
+                    filteredList
                 }
 
                 // Add list to the Filter result
@@ -85,14 +110,32 @@ class QuestionsAdapter(private val mActivity: FragmentActivity?) :
         }
     }
 
+    private fun createDateString(millis: Long): String? {
+        var dateString = mActivity?.getString(R.string.iq_dummy_date)
+        if(millis > 0) {
+            val createdDate = Date(millis)
+            dateString = BaseActivity.mSimpleDateFormatter.format(createdDate)
+        }
+
+        return dateString
+    }
+
+    private fun decodeHtmlString(text: String): String {
+        return if (Build.VERSION.SDK_INT >= 24)
+            Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY).toString()
+        else
+            Html.fromHtml(text).toString()
+    }
+
     /**
      *
      */
     class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView),
             LayoutContainer {
-        fun bind(title: String, ownerName: String?) {
+        fun bind(title: String, ownerName: String?, date: String?) {
             iqTitle.text = title
             iqOwnerName.text = ownerName
+            iqDate.text = date
         }
     }
 }

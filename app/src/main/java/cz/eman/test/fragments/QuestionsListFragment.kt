@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import cz.eman.test.R
 import cz.eman.test.activities.QuestionsInterface
+import cz.eman.test.api.ApiActions
 import cz.eman.test.model.Question
 import cz.eman.test.model.adapters.QuestionsAdapter
 import kotlinx.android.synthetic.main.fragment_questions_list.*
@@ -26,6 +27,7 @@ class QuestionsListFragment : Fragment() {
     private lateinit var mQuestionsList: RecyclerView
     private var mAdapter: QuestionsAdapter? = null
     private var mActivityInterface: QuestionsInterface? = null
+    private val mApiActions = ApiActions.instance
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -33,7 +35,7 @@ class QuestionsListFragment : Fragment() {
         try {
             mActivityInterface = context as QuestionsInterface?
         } catch (e: Exception) {
-            throw ClassCastException(context!!.javaClass.toString() + " must implement ContactInterface")
+            throw ClassCastException(context!!.javaClass.toString() + " must implement QuestionsInterface")
         }
 
     }
@@ -45,9 +47,9 @@ class QuestionsListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mSearch = fql_search
-        mEmpty = fql_empty
-        mQuestionsList = fql_list
+        mSearch = fqlSearch
+        mEmpty = fqlEmpty
+        mQuestionsList = fqlList
 
         // Get data and initiate list adapter
         mAdapter = QuestionsAdapter(activity)
@@ -59,7 +61,7 @@ class QuestionsListFragment : Fragment() {
         mQuestionsList.adapter = mAdapter
 
         // Enable searching by name and email.
-        mSearch.requestFocus()
+        mSearch.setOnClickListener({ mSearch.isIconified = false })
         mSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 // filter recycler view when query submitted
@@ -74,27 +76,23 @@ class QuestionsListFragment : Fragment() {
             }
         })
 
-        // Load contact list
         mActivityInterface?.loadQuestions()
     }
 
     /**
-     * Displays contacts in the list using adapter.
-     *
      * @param questions to display
      */
-    fun displayQuestions(questions: MutableList<Question>) {
-        Log.d("QAdapt", "Displaying ${questions.size} questions.")
+    fun displayQuestions(questions: MutableList<Question>?) {
         // Display recycler view or empty list message
-        if (questions.isEmpty()) {
+        if (questions != null && questions.isEmpty()) {
             mEmpty.visibility = View.VISIBLE
             mQuestionsList.visibility = View.GONE
+            mApiActions.downloadQuestions(this::displayQuestions)
         } else {
             mEmpty.visibility = View.GONE
             mQuestionsList.visibility = View.VISIBLE
         }
 
-        // Add contacts to the adapter
-        mAdapter?.addQuestions(questions)
+        mAdapter?.displayQuestions(questions)
     }
 }

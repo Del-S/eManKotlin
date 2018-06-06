@@ -1,44 +1,41 @@
 package cz.eman.test
 
 import android.content.Intent
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.BottomNavigationView
-import android.support.v7.widget.Toolbar
+import android.support.v4.app.ActivityCompat
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import cz.eman.test.activities.QuestionsActivity
-import kotlinx.android.synthetic.main.activity_base.*
+import cz.eman.test.activities.SettingsActivity
 import kotlinx.android.synthetic.main.element_bottom_menu.*
-
+import java.text.SimpleDateFormat
+import java.util.*
 
 abstract class BaseActivity : AppCompatActivity(),
         BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private var mToolbar: Toolbar? = null
-    private var navigationView: BottomNavigationView? = null
+    private val TAG = "BaseActivity"   // Logging tag
+
+    private lateinit var navigationView: BottomNavigationView
+    private var shouldClose = false    // Checker if application should be closed or not
+
+    companion object {
+        val mLocale = Locale("en")
+        val mSimpleDateFormatter = SimpleDateFormat("dd.MM.yyyy", mLocale)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getContentViewId()) // Sets view based on child activity
 
-        mToolbar = app_toolbar
         navigationView = bottom_menu
-
-        // Initiate toolbar
-        if (mToolbar != null) {
-            setSupportActionBar(mToolbar)
-            if (supportActionBar != null) {
-                supportActionBar!!.setDisplayShowTitleEnabled(false)    // Disable default menu title
-            }
-        }
-
-        // Load bottom navigation
-        if (navigationView != null) {
-            //disableShiftMode(navigationView)
-            navigationView?.setOnNavigationItemSelectedListener(this)
-        }
-        invalidateOptionsMenu()    // Notify that menu has changed
+        Log.d(TAG, "Showing menu option: ${navigationView.parent.toString()}")
+        navigationView.setOnNavigationItemSelectedListener(this)
     }
 
     override fun onStart() {
@@ -47,21 +44,34 @@ abstract class BaseActivity : AppCompatActivity(),
         updateNavigationBarState()
     }
 
-    public override fun onPause() {
+    override fun onPause() {
         super.onPause()
         // Remove inter-activity transition to avoid screen tossing on tapping bottom navigation items
         overridePendingTransition(0, 0)
     }
 
+    override fun onBackPressed() {
+        // Closes the app after 2 clicks of back button
+        if (shouldClose) {
+            ActivityCompat.finishAffinity(this)
+        } else {
+            // If the button was clicked for the first time it will notify the user about leaving.
+            shouldClose = true
+            Toast.makeText(this, R.string.app_leaving_notice, Toast.LENGTH_SHORT).show()
+            Handler().postDelayed({ shouldClose = false }, 3000)
+        }
+    }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        Log.d(TAG, "Showing menu option: ${item.itemId}")
+
         // Starting activities in bottom menu
-        navigationView!!.postDelayed({
+        navigationView.postDelayed({
             when (item.itemId) {
                 R.id.action_show_questions ->
                     showActivity(QuestionsActivity::class.java)
                 R.id.action_show_settings ->
-                    Toast.makeText(this, "Not Implemented yet", Toast.LENGTH_SHORT).show();
-                    //showActivity(MapActivity::class.java)
+                    showActivity(SettingsActivity::class.java)
                 else ->
                     showActivity(QuestionsActivity::class.java)
             }
@@ -98,21 +108,18 @@ abstract class BaseActivity : AppCompatActivity(),
     private fun updateNavigationBarState() {
         val actionId = getNavigationMenuItemId()
         if (actionId >= 0) {
-            val nav = navigationView
-            if (nav != null) {
-                val menu = nav.menu
-                var i = 0
-                val size = menu.size()
-                while (i < size) {
-                    // Check selected menu item
-                    val item = menu.getItem(i)
-                    val shouldBeChecked = item.itemId == actionId
-                    if (shouldBeChecked) {
-                        item.isChecked = true
-                        break
-                    }
-                    i++
+            val menu = navigationView.menu
+            var i = 0
+            val size = menu.size()
+            while (i < size) {
+                // Check selected menu item
+                val item = menu.getItem(i)
+                val shouldBeChecked = item.itemId == actionId
+                if (shouldBeChecked) {
+                    item.isChecked = true
+                    break
                 }
+                i++
             }
         }
     }

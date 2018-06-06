@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Test</string>
+    <string name="app_leaving_notice">Press again to leave the application.</string>
 
     <!-- Bottom menu -->
     <string name="app_menu_questions">Questions</string>
@@ -7,7 +8,10 @@
 
     <!-- Item Question -->
     <string name="iq_title">Title</string>
+    <string name="iq_date">Date</string>
     <string name="iq_owner_name">Owner name</string>
+
+    <string name="iq_dummy_date">Unknown date</string>
 
     <!-- Fragment Questions List -->
     <string name="fql_search">Search</string>
