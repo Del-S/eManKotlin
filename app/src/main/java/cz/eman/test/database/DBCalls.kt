@@ -2,6 +2,7 @@ package cz.eman.test.database
 
 import com.raizlabs.android.dbflow.kotlinextensions.*
 import cz.eman.test.model.Question
+import cz.eman.test.model.Question_Table.id
 
 class DBCalls: DBInterface {
     override fun saveQuestions(questions: List<Question>): Int {
@@ -19,5 +20,9 @@ class DBCalls: DBInterface {
 
     override fun loadQuestions(): MutableList<Question> {
         return (select from Question::class).list
+    }
+
+    override fun loadQuestionById(questionId: Long): Question? {
+        return (select from Question::class).where(id eq questionId).querySingle()
     }
 }

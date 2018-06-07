@@ -17,6 +17,7 @@ import cz.eman.test.api.ApiActions
 import cz.eman.test.model.Question
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_question.*
+import utils.UtilFunctions
 import java.util.*
 
 class QuestionsAdapter(private val mActivity: FragmentActivity?) :
@@ -64,10 +65,12 @@ class QuestionsAdapter(private val mActivity: FragmentActivity?) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val question = mQuestionsFiltered[position]
 
+        val dummyDate = mActivity?.getString(R.string.app_date)
+
         holder.bind(
-                decodeHtmlString(question.title),
+                UtilFunctions.decodeHtmlString(question.title),
                 question.owner?.displayName,
-                createDateString(question.creationDate))
+                UtilFunctions.createDateString(question.creationDate, dummyDate))
 
         val userImage = question.owner?.profileImage
         if(userImage != null && !userImage.isEmpty()) {
@@ -113,24 +116,6 @@ class QuestionsAdapter(private val mActivity: FragmentActivity?) :
                 notifyDataSetChanged()
             }
         }
-    }
-
-    private fun createDateString(millis: Long): String? {
-        Log.d("test", "Milis: $millis")
-        var dateString = mActivity?.getString(R.string.iq_dummy_date)
-        if(millis > 0) {
-            val createdDate = Date(millis)
-            dateString = BaseActivity.mSimpleDateFormatter.format(createdDate)
-        }
-
-        return dateString
-    }
-
-    private fun decodeHtmlString(text: String): String {
-        return if (Build.VERSION.SDK_INT >= 24)
-            Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY).toString()
-        else
-            Html.fromHtml(text).toString()
     }
 
     /**

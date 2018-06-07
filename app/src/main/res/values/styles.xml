@@ -13,15 +13,20 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="DetailTableCell" parent="@android:style/TextAppearance.Small">
+        <item name="android:padding">3dip</item>
+        <item name="android:gravity">center</item>
+    </style>
+
     <style name="SettingsTitle" parent="@android:style/TextAppearance.Large">
-        <item name="android:background">@drawable/item_background_header_first</item>
+        <item name="android:background">@drawable/item_settings_background_header_first</item>
         <item name="android:padding">10dp</item>
         <item name="android:textColor">@color/colorAccent</item>
     </style>
 
     <style name="SettingsRow">
         <item name="android:padding">10dp</item>
-        <item name="android:background">@drawable/item_background</item>
+        <item name="android:background">@drawable/item_list_background</item>
     </style>
 
     <style name="SettingsRowTitle" parent="@android:style/TextAppearance.Medium">

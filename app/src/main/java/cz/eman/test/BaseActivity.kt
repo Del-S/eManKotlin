@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.ActivityCompat
-import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import cz.eman.test.activities.QuestionsActivity
@@ -33,7 +32,6 @@ abstract class BaseActivity : AppCompatActivity(),
         setContentView(getContentViewId()) // Sets view based on child activity
 
         navigationView = bottom_menu
-        Log.d(TAG, "Showing menu option: ${navigationView.parent.toString()}")
         navigationView.setOnNavigationItemSelectedListener(this)
     }
 
@@ -62,8 +60,6 @@ abstract class BaseActivity : AppCompatActivity(),
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        Log.d(TAG, "Showing menu option: ${item.itemId}")
-
         // Starting activities in bottom menu
         navigationView.postDelayed({
             when (item.itemId) {

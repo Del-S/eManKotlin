@@ -6,9 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import cz.eman.test.R
+import cz.eman.test.database.DBCalls
 import kotlinx.android.synthetic.main.fragment_question_detail.*
+import utils.UtilFunctions
 
 class QuestionDetailFragment : Fragment() {
+
+    val dbCalls = DBCalls()
 
     companion object Factory {
 
@@ -36,7 +40,29 @@ class QuestionDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fqdTitle.text = arguments?.getLong(ARG_QUESTION_ID).toString()
+        val questionId = arguments?.getLong(ARG_QUESTION_ID)
+        if (questionId != null) {
+            val question = dbCalls.loadQuestionById(questionId)
+
+            if(question != null) {
+                val dummyDate = activity?.getString(R.string.app_date)
+
+                fqdTitle.text = UtilFunctions.decodeHtmlString(question.title)
+                fqdOwnerName.text = question.owner?.displayName
+                fqdCreatedDate.text = UtilFunctions.createDateString(question.creationDate, dummyDate)
+                fqdBody.text = UtilFunctions.decodeHtmlString(question.body)
+
+                val textIsAnswered: String? = if(question.isAnswered)
+                    activity?.getString(R.string.fqd_table_is_answered_true)
+                else
+                    activity?.getString(R.string.fqd_table_is_answered_false)
+
+                fqdIsAnswered.text = textIsAnswered
+                fqdAnswerCount.text = question.answerCount.toString()
+                fqdViewCount.text = question.viewCount.toString()
+                fqdScore.text = question.score.toString()
+            }
+        }
     }
 
 }

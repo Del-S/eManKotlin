@@ -11,7 +11,7 @@
         android:id="@+id/asConstApiSettings"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/item_background_header_first"
+        android:background="@drawable/item_settings_background_header_first"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent">
@@ -142,7 +142,7 @@
         android:id="@+id/asConstAdditionalInformation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/item_background_header"
+        android:background="@drawable/item_settings_background_header"
         android:layout_marginTop="15dp"
         android:paddingTop="1dp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -166,7 +166,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:background="@drawable/item_background"
+        android:background="@drawable/item_list_background"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/asConstAdditionalInformation">

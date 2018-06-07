@@ -6,4 +6,5 @@ interface DBInterface {
     fun saveQuestions(questions: List<Question>): Int
     fun saveQuestion(question: Question): Boolean
     fun loadQuestions(): MutableList<Question>
+    fun loadQuestionById(questionId: Long): Question?
 }

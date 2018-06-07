@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Test</string>
     <string name="app_leaving_notice">Press again to leave the application.</string>
+    <string name="app_date">1.1.2018</string>
+    <string name="app_owner_name">Owner name</string>
 
     <!-- Bottom menu -->
     <string name="app_menu_questions">Questions</string>
@@ -9,13 +11,22 @@
     <!-- Item Question -->
     <string name="iq_image_description">User image</string>
     <string name="iq_title">Title</string>
-    <string name="iq_date">Date</string>
-    <string name="iq_owner_name">Owner name</string>
     <string name="iq_dummy_date">Unknown date</string>
 
     <!-- Fragment Questions List -->
     <string name="fql_search">Search</string>
     <string name="fql_empty">No questions found.</string>
+
+    <!-- Fragment Question Detail -->
+    <string name="fqd_question_title">Question title</string>
+    <string name="fqd_question_body">Question text</string>
+    <string name="fqd_table_is_answered">Is answered?</string>
+    <string name="fqd_table_is_answered_true">Answered</string>
+    <string name="fqd_table_is_answered_false">Open</string>
+    <string name="fqd_table_answer_count">Answer count</string>
+    <string name="fqd_table_view_count">View count</string>
+    <string name="fqd_table_score">Score</string>
+    <string name="fqd_table_dummy">0</string>
 
     <!-- Activity settings -->
     <string name="as_additional_information_title">Additional information</string>
