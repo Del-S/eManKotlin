@@ -7,7 +7,6 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,19 +24,23 @@ class QuestionsListFragment : Fragment() {
     private lateinit var mSearch: SearchView
     private lateinit var mEmpty: TextView
     private lateinit var mQuestionsList: RecyclerView
+    private lateinit var mApiActions: ApiActions
     private var mAdapter: QuestionsAdapter? = null
     private var mActivityInterface: QuestionsInterface? = null
-    private val mApiActions = ApiActions.instance
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        // Check if startup activity implements listener
-        try {
-            mActivityInterface = context as QuestionsInterface?
-        } catch (e: Exception) {
-            throw ClassCastException(context!!.javaClass.toString() + " must implement QuestionsInterface")
-        }
 
+        if(context != null) {
+            mApiActions = ApiActions.getInstance(context)
+
+            // Check if startup activity implements listener
+            try {
+                mActivityInterface = context as QuestionsInterface?
+            } catch (e: Exception) {
+                throw ClassCastException(context.javaClass.toString() + " must implement QuestionsInterface")
+            }
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

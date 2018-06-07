@@ -18,7 +18,7 @@ data class Owner(
         @JsonProperty("accept_rate") @Column var acceptRate: Int = 0,
         @JsonProperty("display_name") @Column var displayName: String? = "",
         @JsonProperty("link") @Column var link: String? = "",
-        @JsonProperty("profile_image") @Column var profileImage: String? = "",
+        @JsonProperty("profile_image") @Column var profileImage: String? = null,
         @JsonProperty("user_type") @Column var userType: String = "",
         @JsonProperty("reputation") @Column var reputation: Int = 0
 ) {

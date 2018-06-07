@@ -2,33 +2,53 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:layout_marginTop="8dp">
+    android:layout_height="wrap_content">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/iqGuideline"
+        android:layout_width="1dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <ImageView
+        android:id="@+id/iqImage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_margin="10dp"
+        android:contentDescription="@string/iq_image_description"
+        android:src="@drawable/user_dummy"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iqGuideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/iqTitle"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
+        android:layout_marginRight="10dp"
+        android:lines="1"
         android:text="@string/iq_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/colorTextDark"
-        android:lines="1"
+        app:layout_constraintBottom_toBottomOf="@+id/iqImage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@id/iqGuideline"
+        app:layout_constraintTop_toTopOf="@+id/iqImage"
+        app:layout_constraintVertical_bias="0.25" />
 
     <TextView
         android:id="@+id/iqOwnerName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:lines="1"
+        android:layout_marginTop="5dp"
         android:text="@string/iq_owner_name"
+        app:layout_constraintVertical_bias="0"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iqGuideline"
         app:layout_constraintTop_toBottomOf="@+id/iqTitle" />
 
     <TextView
@@ -36,7 +56,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:lines="1"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
         android:text="@string/iq_date"
+        app:layout_constraintVertical_bias="0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iqTitle" />

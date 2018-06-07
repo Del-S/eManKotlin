@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.squareup.picasso.Picasso
 import cz.eman.test.BaseActivity
 import cz.eman.test.R
 import cz.eman.test.activities.QuestionsInterface
@@ -22,17 +23,21 @@ class QuestionsAdapter(private val mActivity: FragmentActivity?) :
         RecyclerView.Adapter<QuestionsAdapter.ViewHolder>(), Filterable {
 
     private val mInflater: LayoutInflater = LayoutInflater.from(mActivity)  // Inflater to inflate views with
-    private val mQuestions:MutableList<Question> = ArrayList()
+    private val mQuestions: MutableList<Question> = ArrayList()
     private var mQuestionsFiltered:MutableList<Question> = ArrayList()
     private var mActivityInterface: QuestionsInterface? = null
-    private val mApiActions = ApiActions.instance
+    private lateinit var mApiActions: ApiActions
 
     init {
-        // Initiate callback connection to the activity or throw an Exception
-        try {
-            mActivityInterface = mActivity as QuestionsInterface
-        } catch (e: Exception) {
-            throw ClassCastException(mActivity!!.javaClass.name + " must implement QuestionsInterface")
+        if(mActivity != null) {
+            mApiActions = ApiActions.getInstance(mActivity.applicationContext)
+
+            // Initiate callback connection to the activity or throw an Exception
+            try {
+                mActivityInterface = mActivity as QuestionsInterface
+            } catch (e: Exception) {
+                throw ClassCastException(mActivity!!.javaClass.name + " must implement QuestionsInterface")
+            }
         }
     }
 
@@ -63,6 +68,11 @@ class QuestionsAdapter(private val mActivity: FragmentActivity?) :
                 decodeHtmlString(question.title),
                 question.owner?.displayName,
                 createDateString(question.creationDate))
+
+        val userImage = question.owner?.profileImage
+        if(userImage != null && !userImage.isEmpty()) {
+            Picasso.with(mActivity).load(userImage).into(holder.iqImage)
+        }
 
         holder.itemView.setOnClickListener({mActivityInterface?.onQuestionClick(question.id)})
 
@@ -106,6 +116,7 @@ class QuestionsAdapter(private val mActivity: FragmentActivity?) :
     }
 
     private fun createDateString(millis: Long): String? {
+        Log.d("test", "Milis: $millis")
         var dateString = mActivity?.getString(R.string.iq_dummy_date)
         if(millis > 0) {
             val createdDate = Date(millis)

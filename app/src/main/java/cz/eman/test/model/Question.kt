@@ -1,5 +1,6 @@
 package cz.eman.test.model
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.raizlabs.android.dbflow.annotation.Column
 import com.raizlabs.android.dbflow.annotation.ForeignKey
@@ -10,20 +11,22 @@ import cz.eman.test.database.AppDatabase
 /**
  * Data class containing question information.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = Question.TABLE_NAME, database = AppDatabase::class)
 data class Question(
         @JsonProperty("question_id")
         @PrimaryKey
         var id: Long = -1,
 
+        @JsonProperty("accepted_answer_id") @Column var acceptedAnswerId: Long = -1,
         @JsonProperty("answer_count") @Column var answerCount: Int = 0,
         @JsonProperty("body") @Column var body: String = "",
-        @JsonProperty("creation_date") @Column var creationDate: Long = 0,
-        @JsonProperty("last_edit_date") @Column var lastEditDate: Long = 0,
         @JsonProperty("closed_date") @Column var closedDate: Long = 0,
+        @JsonProperty("closed_reason") @Column var closedReason: String? = "",
+        @JsonProperty("creation_date") @Column var creationDate: Long = 0,
         @JsonProperty("is_answered") @Column var isAnswered: Boolean = false,
         @JsonProperty("last_activity_date") @Column var lastActivityDate: Long = 0,
-        @JsonProperty("closed_reason") @Column var closedReason: String? = "",
+        @JsonProperty("last_edit_date") @Column var lastEditDate: Long = 0,
         @JsonProperty("link") @Column var link: String = "",
         @JsonProperty("score") @Column var score: Int = 0,
         @JsonProperty("title") @Column var title: String = "",

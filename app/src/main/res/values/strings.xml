@@ -7,10 +7,10 @@
     <string name="app_menu_settings">Settings</string>
 
     <!-- Item Question -->
+    <string name="iq_image_description">User image</string>
     <string name="iq_title">Title</string>
     <string name="iq_date">Date</string>
     <string name="iq_owner_name">Owner name</string>
-
     <string name="iq_dummy_date">Unknown date</string>
 
     <!-- Fragment Questions List -->
@@ -20,8 +20,9 @@
     <!-- Activity settings -->
     <string name="as_additional_information_title">Additional information</string>
     <string name="as_quota_title">Quota for API calls</string>
-    <string name="as_quota_description">API is limited based on documents downloaded. Shows how many can be downloaded.</string>
+    <string name="as_quota_description">Download of questions is limited and this view shows how many of them can still be downloaded. This limit resets every day.</string>
     <string name="as_quota_value_dummy">0 of 0</string>
+    <string name="as_quota_value">%1$d of %2$d</string>
     <string name="as_api_settings_title">API settings</string>
     <string name="as_api_page_size_title">Page size</string>
     <string name="as_api_page_size_description">Sets how many documents is downloaded per API run.</string>
