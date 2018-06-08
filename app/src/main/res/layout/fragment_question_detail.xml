@@ -2,7 +2,6 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground">
@@ -37,30 +36,15 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/fqdOwnerName"
+            android:id="@+id/fqdCreatedDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:maxLines="1"
-            android:text="@string/app_owner_name"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintEnd_toStartOf="@+id/fqdCreatedDate"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fqdTitle" />
-
-        <TextView
-            android:id="@+id/fqdCreatedDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
             android:text="@string/app_date"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fqdTitle" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fqdTitle"/>
 
         <TextView
             android:id="@+id/fqdBody"
@@ -74,7 +58,7 @@
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fqdOwnerName" />
+            app:layout_constraintTop_toBottomOf="@id/fqdCreatedDate" />
 
         <TableLayout
             android:layout_width="match_parent"
@@ -140,6 +124,65 @@
             </TableRow>
 
         </TableLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:background="@drawable/item_question_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fqdConstQuestion">
+
+        <android.support.constraint.Guideline
+            android:id="@+id/fqdGuideline"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.25" />
+
+        <ImageView
+            android:id="@+id/fqdImage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/app_user_image_description"
+            android:src="@drawable/user_dummy"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/fqdGuideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/fqdOwnerName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:lines="1"
+            android:text="@string/app_owner_name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorTextDark"
+            app:layout_constraintBottom_toBottomOf="@+id/fqdImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/fqdGuideline"
+            app:layout_constraintTop_toTopOf="@+id/fqdImage"
+            app:layout_constraintVertical_bias="0.2" />
+
+        <TextView
+            android:id="@+id/fqdOwnerReputation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:lines="1"
+            android:text="@string/fqd_user_reputation"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/fqdGuideline"
+            app:layout_constraintTop_toBottomOf="@+id/fqdOwnerName"
+            app:layout_constraintVertical_bias="0" />
 
     </android.support.constraint.ConstraintLayout>
 

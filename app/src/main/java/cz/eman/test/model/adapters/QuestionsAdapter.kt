@@ -1,23 +1,19 @@
 package cz.eman.test.model.adapters
 
-import android.os.Build
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.RecyclerView
-import android.text.Html
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.squareup.picasso.Picasso
-import cz.eman.test.BaseActivity
 import cz.eman.test.R
 import cz.eman.test.activities.QuestionsInterface
 import cz.eman.test.api.ApiActions
 import cz.eman.test.model.Question
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_question.*
-import utils.UtilFunctions
+import cz.eman.test.utils.UtilFunctions
 import java.util.*
 
 class QuestionsAdapter(private val mActivity: FragmentActivity?) :

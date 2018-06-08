@@ -17,7 +17,7 @@ import cz.eman.test.api.ApiActions
 import cz.eman.test.model.Question
 import cz.eman.test.model.adapters.QuestionsAdapter
 import kotlinx.android.synthetic.main.fragment_questions_list.*
-import utils.SimpleDividerItemDecoration
+import cz.eman.test.utils.SimpleDividerItemDecoration
 
 class QuestionsListFragment : Fragment() {
 

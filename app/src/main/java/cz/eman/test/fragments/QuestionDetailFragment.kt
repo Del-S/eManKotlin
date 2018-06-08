@@ -5,10 +5,12 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.squareup.picasso.Picasso
 import cz.eman.test.R
 import cz.eman.test.database.DBCalls
 import kotlinx.android.synthetic.main.fragment_question_detail.*
-import utils.UtilFunctions
+import cz.eman.test.utils.UtilFunctions
+import kotlinx.android.synthetic.main.item_question.*
 
 class QuestionDetailFragment : Fragment() {
 
@@ -48,7 +50,6 @@ class QuestionDetailFragment : Fragment() {
                 val dummyDate = activity?.getString(R.string.app_date)
 
                 fqdTitle.text = UtilFunctions.decodeHtmlString(question.title)
-                fqdOwnerName.text = question.owner?.displayName
                 fqdCreatedDate.text = UtilFunctions.createDateString(question.creationDate, dummyDate)
                 fqdBody.text = UtilFunctions.decodeHtmlString(question.body)
 
@@ -61,6 +62,15 @@ class QuestionDetailFragment : Fragment() {
                 fqdAnswerCount.text = question.answerCount.toString()
                 fqdViewCount.text = question.viewCount.toString()
                 fqdScore.text = question.score.toString()
+
+                // Owner data
+                val userImage = question.owner?.profileImage
+                if(userImage != null && !userImage.isEmpty()) {
+                    Picasso.with(activity).load(userImage).into(fqdImage)
+                }
+                fqdOwnerName.text = question.owner?.displayName
+                fqdOwnerReputation.text = String.format(getString(R.string.fqd_user_reputation),
+                        question.owner?.reputation)
             }
         }
     }
