@@ -10,6 +10,10 @@
     <string name="app_menu_questions">Questions</string>
     <string name="app_menu_settings">Settings</string>
 
+    <!-- Activity questions -->
+    <string name="iq_error_message">Failed to download new questions!</string>
+    <string name="iq_error_button_retry">Retry</string>
+
     <!-- Item Question -->
     <string name="iq_title">Title</string>
     <string name="iq_dummy_date">Unknown date</string>

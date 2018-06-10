@@ -33,18 +33,8 @@ class QuestionsAdapter(private val mActivity: FragmentActivity?) :
             try {
                 mActivityInterface = mActivity as QuestionsInterface
             } catch (e: Exception) {
-                throw ClassCastException(mActivity!!.javaClass.name + " must implement QuestionsInterface")
+                throw ClassCastException(mActivity.javaClass.name + " must implement QuestionsInterface")
             }
-        }
-    }
-
-    fun displayQuestions(questions: MutableList<Question>?) {
-        mQuestionsFiltered.clear()
-
-        if (questions != null) {
-            mQuestions.addAll(questions)
-            mQuestionsFiltered.addAll(mQuestions)
-            notifyDataSetChanged()
         }
     }
 
@@ -70,13 +60,14 @@ class QuestionsAdapter(private val mActivity: FragmentActivity?) :
 
         val userImage = question.owner?.profileImage
         if(userImage != null && !userImage.isEmpty()) {
-            Picasso.with(mActivity).load(userImage).into(holder.iqImage)
+            //Picasso.with(mActivity).load(userImage).into(holder.iqImage)
         }
 
         holder.itemView.setOnClickListener({mActivityInterface?.onQuestionClick(question.id)})
 
         if(position >= (mQuestions.size - 1))
-            mApiActions.downloadQuestions(this::displayQuestions)
+            mApiActions.downloadQuestions(this::displayQuestions,
+                    this::displayDownloadError)
     }
 
     override fun getFilter(): Filter {
@@ -112,6 +103,20 @@ class QuestionsAdapter(private val mActivity: FragmentActivity?) :
                 notifyDataSetChanged()
             }
         }
+    }
+
+    fun displayQuestions(questions: MutableList<Question>?) {
+        mQuestionsFiltered.clear()
+
+        if (questions != null) {
+            mQuestions.addAll(questions)
+            mQuestionsFiltered.addAll(mQuestions)
+            notifyDataSetChanged()
+        }
+    }
+
+    fun displayDownloadError() {
+        mActivityInterface?.displayDownloadError()
     }
 
     /**

@@ -90,12 +90,17 @@ class QuestionsListFragment : Fragment() {
         if (questions != null && questions.isEmpty()) {
             mEmpty.visibility = View.VISIBLE
             mQuestionsList.visibility = View.GONE
-            mApiActions.downloadQuestions(this::displayQuestions)
+            mApiActions.downloadQuestions(this::displayQuestions,
+                    this::displayDownloadError)
         } else {
             mEmpty.visibility = View.GONE
             mQuestionsList.visibility = View.VISIBLE
         }
 
         mAdapter?.displayQuestions(questions)
+    }
+
+    private fun displayDownloadError() {
+        mActivityInterface?.displayDownloadError()
     }
 }
