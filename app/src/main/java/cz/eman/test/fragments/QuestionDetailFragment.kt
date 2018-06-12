@@ -10,17 +10,20 @@ import cz.eman.test.R
 import cz.eman.test.database.DBCalls
 import kotlinx.android.synthetic.main.fragment_question_detail.*
 import cz.eman.test.utils.UtilFunctions
-import kotlinx.android.synthetic.main.item_question.*
 
+/**
+ * Fragment to display Question information.
+ */
 class QuestionDetailFragment : Fragment() {
 
-    val dbCalls = DBCalls()
+    private val dbCalls = DBCalls() // Class used to load Questions from the database
 
     companion object Factory {
-
-        const val ARG_QUESTION_ID = "argQuestionId"
+        const val ARG_QUESTION_ID = "argQuestionId"     // Question ID is used as a parameter to display specific question
 
         /**
+         * Create an instance of the Fragment with a parameter.
+         * - Parameter is saved in the arguments.
          *
          * @param questionId to save into args
          * @return instance of this fragment
@@ -42,35 +45,37 @@ class QuestionDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val questionId = arguments?.getLong(ARG_QUESTION_ID)
+        val questionId = arguments?.getLong(ARG_QUESTION_ID)    // Load Question ID from the arguments
         if (questionId != null) {
-            val question = dbCalls.loadQuestionById(questionId)
+            val question = dbCalls.loadQuestionById(questionId) // Load Question from the Database based on ID
 
+            // Display question information
             if(question != null) {
-                val dummyDate = activity?.getString(R.string.app_date)
-
-                fqdTitle.text = UtilFunctions.decodeHtmlString(question.title)
-                fqdCreatedDate.text = UtilFunctions.createDateString(question.creationDate, dummyDate)
-                fqdBody.text = UtilFunctions.decodeHtmlString(question.body)
-
+                val dummyDate = activity?.getString(R.string.app_date)     // Load dummy date
+                // Check if the Question is answered and set this variable
                 val textIsAnswered: String? = if(question.isAnswered)
                     activity?.getString(R.string.fqd_table_is_answered_true)
                 else
                     activity?.getString(R.string.fqd_table_is_answered_false)
+                val ownerImage = question.owner?.profileImage    // Load owner image
 
-                fqdIsAnswered.text = textIsAnswered
-                fqdAnswerCount.text = question.answerCount.toString()
-                fqdViewCount.text = question.viewCount.toString()
-                fqdScore.text = question.score.toString()
+                // Setting data for the question block
+                fqdTitle.text = UtilFunctions.decodeHtmlString(question.title)  // Set question title (HTML decoded)
+                fqdCreatedDate.text = UtilFunctions.createDateString(question.creationDate, dummyDate)  // Set creation date
+                fqdBody.text = UtilFunctions.decodeHtmlString(question.body)    // Set body of the question to the detail (HTML decoded)
+                fqdIsAnswered.text = textIsAnswered     // Set answered text
+                fqdAnswerCount.text = question.answerCount.toString()   // Set answer count
+                fqdViewCount.text = question.viewCount.toString()       // Set view Count
+                fqdScore.text = question.score.toString()               // Set question score
 
-                // Owner data
-                val userImage = question.owner?.profileImage
-                if(userImage != null && !userImage.isEmpty()) {
-                    Picasso.with(activity).load(userImage).into(fqdImage)
+                // Setting question owner data
+                if(ownerImage != null && !ownerImage.isEmpty()) {
+                    // Picasso loads data from cache or URL and displays it
+                    Picasso.with(activity).load(ownerImage).into(fqdImage)
                 }
-                fqdOwnerName.text = question.owner?.displayName
+                fqdOwnerName.text = question.owner?.displayName     // Set owner display name
                 fqdOwnerReputation.text = String.format(getString(R.string.fqd_user_reputation),
-                        question.owner?.reputation)
+                        question.owner?.reputation)     // Set owner reputation
             }
         }
     }

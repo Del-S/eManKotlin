@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import cz.eman.test.BaseActivity
@@ -23,9 +22,12 @@ class QuestionsActivity : BaseActivity(), QuestionsInterface {
     private var mQuestions: MutableList<Question> = ArrayList()
     private lateinit var mErrorRetry: Button
     private lateinit var mConstError: ConstraintLayout
+    private var isTablet: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        isTablet = resources.getBoolean(R.bool.isTablet)
 
         mErrorRetry = aqErrorButtonRetry
         mConstError = aqConstError
@@ -72,14 +74,33 @@ class QuestionsActivity : BaseActivity(), QuestionsInterface {
      */
     private fun showFragment(fragment: Fragment?) {
         if (fragment != null) {
-            val fragmentTag = fragment.javaClass.simpleName
-            val fragmentTransaction = mFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.aqFrameLayout, fragment, fragmentTag)
-            // QuestionsListFragment is not needed to be add to back stack
-            if (fragmentTag != QuestionsListFragment::class.java.simpleName)
-                fragmentTransaction.addToBackStack(null)
-            fragmentTransaction.commitAllowingStateLoss()
+            if(!isTablet) {
+                showFragmentMobile(fragment)
+            } else {
+                showFragmentTablet(fragment)
+            }
         }
+    }
+
+    private fun showFragmentMobile(fragment: Fragment) {
+        val fragmentTag = fragment.javaClass.simpleName
+        val fragmentTransaction = mFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.aqFrameLayout, fragment, fragmentTag)
+        // QuestionsListFragment is not needed to be add to back stack
+        if (fragmentTag != QuestionsListFragment::class.java.simpleName)
+            fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commitAllowingStateLoss()
+    }
+
+    private fun showFragmentTablet(fragment: Fragment) {
+        val fragmentTag = fragment.javaClass.simpleName
+        val fragmentTransaction = mFragmentManager.beginTransaction()
+        if(fragmentTag == QuestionsListFragment::class.java.simpleName) {
+            fragmentTransaction.replace(R.id.aqFrameLayoutList, fragment, fragmentTag)
+        } else {
+            fragmentTransaction.replace(R.id.aqFrameLayoutDetail, fragment, fragmentTag)
+        }
+        fragmentTransaction.commitAllowingStateLoss()
     }
 
     /**
@@ -87,14 +108,12 @@ class QuestionsActivity : BaseActivity(), QuestionsInterface {
      */
     private fun displayQuestions(questions: MutableList<Question>?) {
         // Post questions to the list fragment
-        if(questions != null && !questions.isEmpty())
-            (supportFragmentManager
-                    .findFragmentByTag(QuestionsListFragment::class.java.simpleName) as
-                    QuestionsListFragment?)?.displayQuestions(questions)
+        (mFragmentManager
+                .findFragmentByTag(QuestionsListFragment::class.java.simpleName) as
+                QuestionsListFragment?)?.displayDatabaseQuestions(questions)
     }
 
     override fun displayDownloadError() {
-        Log.e("svsvsvsvsdv", "Displaying error message")
         mConstError.visibility = View.VISIBLE
     }
 

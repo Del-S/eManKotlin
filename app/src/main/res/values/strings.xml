@@ -17,6 +17,7 @@
     <!-- Item Question -->
     <string name="iq_title">Title</string>
     <string name="iq_dummy_date">Unknown date</string>
+    <string name="iq_downloading_questions">This is not the end!\nDownloading next questions.</string>
 
     <!-- Fragment Questions List -->
     <string name="fql_search">Search</string>

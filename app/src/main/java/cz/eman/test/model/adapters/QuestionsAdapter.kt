@@ -16,20 +16,25 @@ import kotlinx.android.synthetic.main.item_question.*
 import cz.eman.test.utils.UtilFunctions
 import java.util.*
 
+/**
+ * Adapter showing Questions in the RecyclerView.
+ * - Enables filtering.
+ * - Initiates download of new Questions.
+ */
 class QuestionsAdapter(private val mActivity: FragmentActivity?) :
         RecyclerView.Adapter<QuestionsAdapter.ViewHolder>(), Filterable {
 
     private val mInflater: LayoutInflater = LayoutInflater.from(mActivity)  // Inflater to inflate views with
-    private val mQuestions: MutableList<Question> = ArrayList()
-    private var mQuestionsFiltered:MutableList<Question> = ArrayList()
-    private var mActivityInterface: QuestionsInterface? = null
-    private lateinit var mApiActions: ApiActions
+    private val mQuestions: MutableList<Question> = ArrayList()             // List of all questions
+    private var mQuestionsFiltered:MutableList<Question> = ArrayList()      // Filtered list of questions
+    private lateinit var mActivityInterface: QuestionsInterface             // Interface with Activity
+    private lateinit var mApiActions: ApiActions                            // Interface with API to download new data
 
     init {
         if(mActivity != null) {
-            mApiActions = ApiActions.getInstance(mActivity.applicationContext)
+            mApiActions = ApiActions.getInstance(mActivity.applicationContext)  // Initiates API connection instance
 
-            // Initiate callback connection to the activity or throw an Exception
+            // Initiate activity interface or throw an Exception
             try {
                 mActivityInterface = mActivity as QuestionsInterface
             } catch (e: Exception) {
@@ -38,38 +43,66 @@ class QuestionsAdapter(private val mActivity: FragmentActivity?) :
         }
     }
 
+    /**
+     * Counts item in the list. It is count in filtered list or in all questions increased by one.
+     * Increasing by one enables to display message about no end to the list (message about
+     * downloading new questions)
+     *
+     * @return Int count of questions
+     */
     override fun getItemCount(): Int {
+        if(mQuestions.size == mQuestionsFiltered.size) {
+            return mQuestions.size + 1
+        }
         return mQuestionsFiltered.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        // Creating single item view
+        // Inflating single item view
         val view = mInflater.inflate(R.layout.item_question, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val question = mQuestionsFiltered[position]
+        // Check if we are at the end of the list
+        if(position >= mQuestions.size) {
+            // Display end of the list information
+            holder.iqItemDownloadInfo.visibility = View.VISIBLE
+            holder.iqItemInfo.visibility = View.GONE
 
-        val dummyDate = mActivity?.getString(R.string.app_date)
+            // Load new questions
+            if(position >= mQuestions.size)
+                mApiActions.downloadQuestions(this::displayQuestions,
+                        this::displayDownloadError)
+        } else {
+            // Display information about question
+            holder.iqItemDownloadInfo.visibility = View.GONE
+            holder.iqItemInfo.visibility = View.VISIBLE
 
-        holder.bind(
-                UtilFunctions.decodeHtmlString(question.title),
-                question.owner?.displayName,
-                UtilFunctions.createDateString(question.creationDate, dummyDate))
+            val question = mQuestionsFiltered[position]             // Load question information
+            val dummyDate = mActivity?.getString(R.string.app_date)                              // Load dummy date
+            val ownerImage = question.owner?.profileImage            // Load owner profile
 
-        val userImage = question.owner?.profileImage
-        if(userImage != null && !userImage.isEmpty()) {
-            //Picasso.with(mActivity).load(userImage).into(holder.iqImage)
+            // Binding text views to the holder
+            holder.bind(
+                    UtilFunctions.decodeHtmlString(question.title),
+                    question.owner?.displayName,
+                    UtilFunctions.createDateString(question.creationDate, dummyDate))
+
+            // Display owner image
+            if (ownerImage != null && !ownerImage.isEmpty()) {
+                Picasso.with(mActivity).load(ownerImage).into(holder.iqImage)
+            }
+
+            // Display question detail on item click
+            holder.itemView.setOnClickListener({ mActivityInterface.onQuestionClick(question.id) })
         }
-
-        holder.itemView.setOnClickListener({mActivityInterface?.onQuestionClick(question.id)})
-
-        if(position >= (mQuestions.size - 1))
-            mApiActions.downloadQuestions(this::displayQuestions,
-                    this::displayDownloadError)
     }
 
+    /**
+     * Enables filtering in the list.
+     * - Filtered by Question title and Owner name.
+     */
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(charSequence: CharSequence): Filter.FilterResults {
@@ -81,7 +114,7 @@ class QuestionsAdapter(private val mActivity: FragmentActivity?) :
                 } else {
                     val filteredList = ArrayList<Question>()
                     for (question in mQuestions) {
-                        // Name and Email match condition.
+                        // Check if question title and owner display name matches search conditions
                         if (question.title.toLowerCase().contains(charString.toLowerCase())
                                 || question.owner?.displayName!!.contains(charSequence)) {
                             filteredList.add(question)
@@ -105,25 +138,34 @@ class QuestionsAdapter(private val mActivity: FragmentActivity?) :
         }
     }
 
+    /**
+     * Add questions to the list.
+     * - Clearing filtered list to prevent errors.
+     */
     fun displayQuestions(questions: MutableList<Question>?) {
-        mQuestionsFiltered.clear()
-
         if (questions != null) {
+            mQuestionsFiltered.clear()
             mQuestions.addAll(questions)
             mQuestionsFiltered.addAll(mQuestions)
             notifyDataSetChanged()
         }
     }
 
+    /**
+     * Display download error in the Activity.
+     */
     fun displayDownloadError() {
-        mActivityInterface?.displayDownloadError()
+        mActivityInterface.displayDownloadError()
     }
 
     /**
-     *
+     * Holder of information for question item.
      */
     class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView),
             LayoutContainer {
+        /**
+         * Bind information to the holder.
+         */
         fun bind(title: String, ownerName: String?, date: String?) {
             iqTitle.text = title
             iqOwnerName.text = ownerName

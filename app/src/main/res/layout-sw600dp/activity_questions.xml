@@ -6,14 +6,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <android.support.constraint.Guideline
+        android:id="@+id/aqGuideline"
+        android:background="@color/colorAccent"
+        android:layout_width="2dip"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.4" />
+
     <FrameLayout
-        android:id="@+id/aqFrameLayout"
+        android:id="@+id/aqFrameLayoutList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_menu"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/aqGuideline"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <View
+        android:background="@color/colorAccent"
+        android:layout_width="2dip"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_menu"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/aqGuideline"
+        app:layout_constraintStart_toStartOf="@id/aqGuideline"/>
+
+    <FrameLayout
+        android:id="@+id/aqFrameLayoutDetail"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_menu"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@id/aqGuideline" />
     
     <android.support.constraint.ConstraintLayout
         android:id="@+id/aqConstError"

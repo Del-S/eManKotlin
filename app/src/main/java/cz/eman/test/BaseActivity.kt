@@ -14,25 +14,30 @@ import kotlinx.android.synthetic.main.element_bottom_menu.*
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * Base activity handles functions for all child activities like:
+ * - Menu functions
+ * - Showing new activity
+ * - Closing the app
+ */
 abstract class BaseActivity : AppCompatActivity(),
         BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private val TAG = "BaseActivity"   // Logging tag
-
-    private lateinit var navigationView: BottomNavigationView
+    private lateinit var navigationView: BottomNavigationView   // Bottom navigation (must be included in layout)
     private var shouldClose = false    // Checker if application should be closed or not
 
+    // Companion object containing static variables
     companion object {
-        val mLocale = Locale("en")
+        val mLocale = Locale("en")  // Application locale for date formatter
         val mSimpleDateFormatter = SimpleDateFormat("dd.MM.yyyy", mLocale)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(getContentViewId()) // Sets view based on child activity
+        setContentView(getContentViewId())   // Sets view based on child activity
 
-        navigationView = bottom_menu
-        navigationView.setOnNavigationItemSelectedListener(this)
+        navigationView = bottom_menu    // Initiate bottom menu
+        navigationView.setOnNavigationItemSelectedListener(this)    // This instance works as a navigation click listener
     }
 
     override fun onStart() {
@@ -60,7 +65,7 @@ abstract class BaseActivity : AppCompatActivity(),
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Starting activities in bottom menu
+        // Starting activities using bottom menu
         navigationView.postDelayed({
             when (item.itemId) {
                 R.id.action_show_questions ->

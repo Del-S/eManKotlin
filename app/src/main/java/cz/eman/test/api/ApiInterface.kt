@@ -12,6 +12,7 @@ import retrofit2.http.*
 interface ApiInterface {
 
     companion object {
+        // Static instance of this class lazy loaded retrofit configuration.
         val instance: ApiInterface by lazy {
             val retrofit = Retrofit.Builder()
                     .baseUrl("https://api.stackexchange.com/2.2/")
