@@ -61,8 +61,7 @@ class QuestionsListFragment : Fragment() {
         mEmpty = fqlEmpty
         mQuestionsList = fqlList
 
-        // Get data and initiate list adapter
-        mAdapter = QuestionsAdapter(activity)
+        mAdapter = QuestionsAdapter(activity)   // Get data and initiate list adapter
 
         // Recycler view for questions
         val divider = ContextCompat.getDrawable(activity!!, R.drawable.row_with_divider)
@@ -107,7 +106,7 @@ class QuestionsListFragment : Fragment() {
                     this::displayDownloadError)
         } else {
             // Display questions in the list
-            displayQuestions(questions)
+            mAdapter?.displayQuestionsFromDatabase(questions)
         }
     }
 
@@ -132,5 +131,9 @@ class QuestionsListFragment : Fragment() {
      */
     fun displayDownloadError() {
         mActivityInterface.displayDownloadError()
+    }
+
+    fun getRecyclerView(): RecyclerView {
+        return mQuestionsList
     }
 }

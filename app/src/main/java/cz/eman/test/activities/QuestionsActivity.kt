@@ -128,7 +128,6 @@ class QuestionsActivity : BaseActivity(), QuestionsInterface {
         val fragmentTag = fragment.javaClass.simpleName                         // Load fragment class name
         val fragmentTransaction = mFragmentManager.beginTransaction()           // Begin fragment transaction
         fragmentTransaction.replace(R.id.aqFrameLayout, fragment, fragmentTag)  // Replace current fragment with new one
-
         if (fragmentTag != QuestionsListFragment::class.java.simpleName)        // QuestionsListFragment is not needed to be add to back stack
             fragmentTransaction.addToBackStack(null)                      // Add fragment to back stack to enable to pop it out
         fragmentTransaction.commitAllowingStateLoss()                           // Commit the fragment to display
@@ -143,10 +142,31 @@ class QuestionsActivity : BaseActivity(), QuestionsInterface {
         val fragmentTransaction = mFragmentManager.beginTransaction()       // Begin fragment transaction
         if(fragmentTag == QuestionsListFragment::class.java.simpleName) {   // Decide to display fragment in specific Layout
             fragmentTransaction.replace(R.id.aqFrameLayoutList, fragment, fragmentTag)   // Display ListFragment
+            showNewDetailFragment()
         } else {
             fragmentTransaction.replace(R.id.aqFrameLayoutDetail, fragment, fragmentTag) // Display DetailFragment
         }
         fragmentTransaction.commitAllowingStateLoss()   // Commit the fragment to display
+    }
+
+    /**
+     * Shows a new detail fragment on startup and when there is not detail fragment displayed.
+     */
+    private fun showNewDetailFragment() {
+        val fragment: Fragment? = mFragmentManager
+                .findFragmentByTag(QuestionDetailFragment::class.java.simpleName)   // Try to find Detail fragment in manager
+        val questionId = mDatabase.loadFirstQuestionId()                            // Load id of first question from the database
+
+        // Trigger this only if fragment is not displayed and there is a question to display
+        if((fragment == null || !fragment.isVisible)
+                && questionId != null) {
+            val detailFragment = QuestionDetailFragment.newInstance(questionId)     // Create a new fragment for specific question
+            val fragmentTransaction = mFragmentManager.beginTransaction()           // Begin fragment transaction
+            fragmentTransaction.replace(R.id.aqFrameLayoutDetail,
+                    detailFragment,
+                    detailFragment.javaClass.simpleName)    // Display DetailFragment
+            fragmentTransaction.commitAllowingStateLoss()   // Commit the fragment to display
+        }
     }
 
     /**

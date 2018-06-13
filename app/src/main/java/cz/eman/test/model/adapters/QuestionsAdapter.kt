@@ -2,6 +2,7 @@ package cz.eman.test.model.adapters
 
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -81,7 +82,7 @@ class QuestionsAdapter(private val mActivity: FragmentActivity?) :
 
             val question = mQuestionsFiltered[position]             // Load question information
             val dummyDate = mActivity?.getString(R.string.app_date)                              // Load dummy date
-            val ownerImage = question.owner?.profileImage            // Load owner profile
+            val ownerImage = question.owner?.profileImage           // Load owner profile
 
             // Binding text views to the holder
             holder.bind(
@@ -140,13 +141,28 @@ class QuestionsAdapter(private val mActivity: FragmentActivity?) :
 
     /**
      * Add questions to the list.
-     * - Clearing filtered list to prevent errors.
+     * - Does not clear lists because it only adds new questions.
      */
     fun displayQuestions(questions: MutableList<Question>?) {
         if (questions != null) {
-            mQuestionsFiltered.clear()
             mQuestions.addAll(questions)
-            mQuestionsFiltered.addAll(mQuestions)
+            mQuestionsFiltered.addAll(questions)
+            notifyDataSetChanged()
+        }
+    }
+
+    /**
+     * Add questions to the list from the database.
+     * - Clear lists to prevent errors.
+     */
+    fun displayQuestionsFromDatabase(questions: MutableList<Question>?) {
+        if (questions != null) {
+            // Clear the lists
+            mQuestions.clear()
+            mQuestionsFiltered.clear()
+
+            mQuestions.addAll(questions)
+            mQuestionsFiltered.addAll(questions)
             notifyDataSetChanged()
         }
     }

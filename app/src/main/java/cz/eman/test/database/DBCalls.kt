@@ -1,7 +1,9 @@
 package cz.eman.test.database
 
 import com.raizlabs.android.dbflow.kotlinextensions.*
+import com.raizlabs.android.dbflow.sql.language.Select
 import cz.eman.test.model.Question
+import cz.eman.test.model.Question_Table
 import cz.eman.test.model.Question_Table.id
 
 /**
@@ -38,7 +40,9 @@ class DBCalls: DBInterface {
      * @return MutableList<Question>
      */
     override fun loadQuestions(): MutableList<Question> {
-        return (select from Question::class).list
+        return (select from Question::class)
+                .orderBy(Question_Table.creationDate, false)
+                .list
     }
 
     /**
@@ -48,5 +52,18 @@ class DBCalls: DBInterface {
      */
     override fun loadQuestionById(questionId: Long): Question? {
         return (select from Question::class).where(id eq questionId).querySingle()
+    }
+
+    /**
+     * Loads id of first question in the list.
+     * - Used in tablet design.
+     *
+     * @return Long?
+     */
+    override fun loadFirstQuestionId(): Long? {
+        return (Select(Question_Table.id).from(Question::class)
+                .orderBy(Question_Table.creationDate, false)
+                .limit(1)
+                .querySingle())?.id
     }
 }

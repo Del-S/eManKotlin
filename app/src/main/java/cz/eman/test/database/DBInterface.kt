@@ -34,4 +34,12 @@ interface DBInterface {
      * @return Question?
      */
     fun loadQuestionById(questionId: Long): Question?
+
+    /**
+     * Loads id of first question in the list.
+     * - Used in tablet design.
+     *
+     * @return Long?
+     */
+    fun loadFirstQuestionId(): Long?
 }

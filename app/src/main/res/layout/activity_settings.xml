@@ -7,161 +7,173 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/asConstApiSettings"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/item_settings_background_header_first"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
-
-        <TextView
-            android:id="@+id/asApiSettingsTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/as_api_settings_title"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            style="@style/SettingsTitle"/>
-
-    </android.support.constraint.ConstraintLayout>
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/asConstApi"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/asConstApiSettings">
+        app:layout_constraintBottom_toTopOf="@id/bottom_menu">
 
         <android.support.constraint.ConstraintLayout
-            android:id="@+id/asConstApiPageSize"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            style="@style/SettingsRow">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/asApiPageSizeTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/as_api_page_size_title"
-                android:layout_marginLeft="5dp"
-                android:layout_marginStart="5dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                style="@style/SettingsRowTitle"/>
-
-            <TextView
-                android:id="@+id/asApiPageSizeDescription"
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/asConstApiSettings"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
-                android:text="@string/as_api_page_size_description"
-                tools:layout_constraintLeft_creator="1"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/asApiPageSizeTitle"
-                app:layout_constraintRight_toLeftOf="@+id/asApiPageSizeValue"
-                style="@style/SettingsRowDescription"/>
-
-            <TextView
-                android:id="@+id/asApiPageSizeValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginEnd="5dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/as_api_page_size_dummy"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/asApiPageSizeTitle"
-                app:layout_constraintBottom_toBottomOf="@+id/asApiPageSizeDescription"/>
-
-        </android.support.constraint.ConstraintLayout>
-
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/asConstApiPage"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/asConstApiPageSize"
-            style="@style/SettingsRow">
-
-            <TextView
-                android:id="@+id/asApiPageTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/as_api_page_title"
-                android:layout_marginLeft="5dp"
-                android:layout_marginStart="5dp"
+                android:background="@drawable/item_settings_background_header_first"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                style="@style/SettingsRowTitle"/>
+                app:layout_constraintRight_toRightOf="parent">
 
-            <TextView
-                android:id="@+id/asApiPageDescription"
+                <TextView
+                    android:id="@+id/asApiSettingsTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/as_api_settings_title"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    style="@style/SettingsTitle"/>
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/asConstApi"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
-                android:text="@string/as_api_page_description"
-                tools:layout_constraintLeft_creator="1"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/asApiPageTitle"
-                app:layout_constraintRight_toLeftOf="@+id/asApiPageValue"
-                style="@style/SettingsRowDescription"/>
-
-            <TextView
-                android:id="@+id/asApiPageValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginEnd="5dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/as_api_page_dummy"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/asApiPageTitle"
-                app:layout_constraintBottom_toBottomOf="@+id/asApiPageDescription"/>
+                app:layout_constraintTop_toBottomOf="@id/asConstApiSettings">
 
-        </android.support.constraint.ConstraintLayout>
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/asConstApiPageSize"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    style="@style/SettingsRow">
 
-    </android.support.constraint.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/asApiPageSizeTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/as_api_page_size_title"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        style="@style/SettingsRowTitle"/>
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/asConstAdditionalInformation"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/item_settings_background_header"
-        android:layout_marginTop="15dp"
-        android:paddingTop="1dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/asConstApi"
-        app:layout_constraintRight_toRightOf="parent">
+                    <TextView
+                        android:id="@+id/asApiPageSizeDescription"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/as_api_page_size_description"
+                        tools:layout_constraintLeft_creator="1"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/asApiPageSizeTitle"
+                        app:layout_constraintRight_toLeftOf="@+id/asApiPageSizeValue"
+                        style="@style/SettingsRowDescription"/>
 
-        <TextView
-            android:id="@+id/asAdditionalInformationTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/as_additional_information_title"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            style="@style/SettingsTitle"/>
+                    <TextView
+                        android:id="@+id/asApiPageSizeValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/as_api_page_size_dummy"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/asApiPageSizeTitle"
+                        app:layout_constraintBottom_toBottomOf="@+id/asApiPageSizeDescription"/>
 
-    </android.support.constraint.ConstraintLayout>
+                </android.support.constraint.ConstraintLayout>
 
-    <android.support.constraint.ConstraintLayout
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/asConstApiPage"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/asConstApiPageSize"
+                    style="@style/SettingsRow">
+
+                    <TextView
+                        android:id="@+id/asApiPageTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/as_api_page_title"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        style="@style/SettingsRowTitle"/>
+
+                    <TextView
+                        android:id="@+id/asApiPageDescription"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/as_api_page_description"
+                        tools:layout_constraintLeft_creator="1"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/asApiPageTitle"
+                        app:layout_constraintRight_toLeftOf="@+id/asApiPageValue"
+                        style="@style/SettingsRowDescription"/>
+
+                    <TextView
+                        android:id="@+id/asApiPageValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/as_api_page_dummy"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/asApiPageTitle"
+                        app:layout_constraintBottom_toBottomOf="@+id/asApiPageDescription"/>
+
+                </android.support.constraint.ConstraintLayout>
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/asConstAdditionalInformation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/item_settings_background_header"
+                android:layout_marginTop="15dp"
+                android:paddingTop="1dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/asConstApi"
+                app:layout_constraintRight_toRightOf="parent">
+
+                <TextView
+                    android:id="@+id/asAdditionalInformationTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/as_additional_information_title"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    style="@style/SettingsTitle"/>
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
         android:id="@+id/asConstQuota"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -213,6 +225,10 @@
             app:layout_constraintBottom_toBottomOf="@+id/asQuotaDescription"/>
 
     </android.support.constraint.ConstraintLayout>
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
 
     <include
         layout="@layout/element_bottom_menu"
