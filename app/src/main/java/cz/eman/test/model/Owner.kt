@@ -1,5 +1,6 @@
 package cz.eman.test.model
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.raizlabs.android.dbflow.annotation.Column
 import com.raizlabs.android.dbflow.annotation.PrimaryKey
@@ -9,6 +10,7 @@ import cz.eman.test.database.AppDatabase
 /**
  * Data class for owner of a question.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = Owner.TABLE_NAME, database = AppDatabase::class)
 data class Owner(
         @PrimaryKey
@@ -18,7 +20,7 @@ data class Owner(
         @JsonProperty("accept_rate") @Column var acceptRate: Int = 0,
         @JsonProperty("display_name") @Column var displayName: String? = "",
         @JsonProperty("link") @Column var link: String? = "",
-        @JsonProperty("profile_image") @Column var profileImage: String? = "",
+        @JsonProperty("profile_image") @Column var profileImage: String? = null,
         @JsonProperty("user_type") @Column var userType: String = "",
         @JsonProperty("reputation") @Column var reputation: Int = 0
 ) {

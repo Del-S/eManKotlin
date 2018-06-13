@@ -15,7 +15,11 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            multiDexEnabled true
+        }
         release {
+            multiDexEnabled true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -27,27 +31,32 @@ androidExtensions {
 }
 
 ext {
+    android_support_version = "27.1.1"
     dbflow_version = "4.2.4"
+    retrofit_version = "2.4.0"
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:design:27.1.1'
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
-    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation "com.android.support:design:$android_support_version"
+    implementation "com.android.support:appcompat-v7:$android_support_version"
+    implementation "com.android.support.constraint:constraint-layout:1.1.1"
+    implementation "com.android.support:recyclerview-v7:$android_support_version"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation "com.squareup.retrofit2:adapter-rxjava2:2.4.0"
-    implementation "com.squareup.retrofit2:converter-jackson:2.4.0"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-jackson:$retrofit_version"
     implementation "io.reactivex.rxjava2:rxandroid:2.0.2"
 
     kapt "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
     implementation "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
     implementation "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
     implementation "com.github.Raizlabs.DBFlow:dbflow-kotlinextensions:${dbflow_version}"
+
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

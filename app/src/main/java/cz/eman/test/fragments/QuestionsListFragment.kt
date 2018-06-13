@@ -7,35 +7,46 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import cz.eman.test.R
 import cz.eman.test.activities.QuestionsInterface
+import cz.eman.test.api.ApiActions
 import cz.eman.test.model.Question
 import cz.eman.test.model.adapters.QuestionsAdapter
 import kotlinx.android.synthetic.main.fragment_questions_list.*
-import utils.SimpleDividerItemDecoration
+import cz.eman.test.utils.SimpleDividerItemDecoration
 
+/**
+ * Fragment to display Question list.
+ * - Also can trigger download.
+ * - Sends new questions to the Adapter.
+ */
 class QuestionsListFragment : Fragment() {
 
-    private lateinit var mSearch: SearchView
-    private lateinit var mEmpty: TextView
-    private lateinit var mQuestionsList: RecyclerView
-    private var mAdapter: QuestionsAdapter? = null
-    private var mActivityInterface: QuestionsInterface? = null
+    // Views for this fragment
+    private lateinit var mSearch: SearchView            // View for searching in the list
+    private lateinit var mEmpty: TextView               // Text for empty list
+    private lateinit var mQuestionsList: RecyclerView   // RecyclerView to display questions
+    private lateinit var mApiActions: ApiActions        // Interface with API to download new data
+    private lateinit var mActivityInterface: QuestionsInterface  // Interface with Activity
+    private var mAdapter: QuestionsAdapter? = null      // Adapter used to display question in the list
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        // Check if startup activity implements listener
-        try {
-            mActivityInterface = context as QuestionsInterface?
-        } catch (e: Exception) {
-            throw ClassCastException(context!!.javaClass.toString() + " must implement ContactInterface")
-        }
 
+        if(context != null) {
+            mApiActions = ApiActions.getInstance(context)   // Initiates API connection instance
+
+            // Initiate activity interface or throw an Exception
+            try {
+                mActivityInterface = context as QuestionsInterface
+            } catch (e: Exception) {
+                throw ClassCastException(context.javaClass.toString() + " must implement QuestionsInterface")
+            }
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -45,21 +56,21 @@ class QuestionsListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mSearch = fql_search
-        mEmpty = fql_empty
-        mQuestionsList = fql_list
+        // Initiate widgets (used due to lateinit)
+        mSearch = fqlSearch
+        mEmpty = fqlEmpty
+        mQuestionsList = fqlList
 
-        // Get data and initiate list adapter
-        mAdapter = QuestionsAdapter(activity)
+        mAdapter = QuestionsAdapter(activity)   // Get data and initiate list adapter
 
-        // Recycler view for employees
+        // Recycler view for questions
         val divider = ContextCompat.getDrawable(activity!!, R.drawable.row_with_divider)
         mQuestionsList.layoutManager = LinearLayoutManager(activity)
         mQuestionsList.addItemDecoration(SimpleDividerItemDecoration(divider!!))
         mQuestionsList.adapter = mAdapter
 
-        // Enable searching by name and email.
-        mSearch.requestFocus()
+        // Enable searching by title and owner name.
+        mSearch.setOnClickListener({ mSearch.isIconified = false })
         mSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 // filter recycler view when query submitted
@@ -74,27 +85,55 @@ class QuestionsListFragment : Fragment() {
             }
         })
 
-        // Load contact list
-        mActivityInterface?.loadQuestions()
+        // Call Activity to load questions
+        mActivityInterface.loadQuestions()
     }
 
     /**
-     * Displays contacts in the list using adapter.
+     * Display questions from database.
+     * If this list is empty then try to download new ones from API.
      *
      * @param questions to display
      */
-    fun displayQuestions(questions: MutableList<Question>) {
-        Log.d("QAdapt", "Displaying ${questions.size} questions.")
-        // Display recycler view or empty list message
-        if (questions.isEmpty()) {
+    fun displayDatabaseQuestions(questions: MutableList<Question>?) {
+        if (questions != null && questions.isEmpty()) {
+            // Display empty list message and hide the list
             mEmpty.visibility = View.VISIBLE
             mQuestionsList.visibility = View.GONE
+
+            // Try to download new questions from the API
+            mApiActions.downloadQuestions(this::displayQuestions,
+                    this::displayDownloadError)
         } else {
+            // Display questions in the list
+            mAdapter?.displayQuestionsFromDatabase(questions)
+        }
+    }
+
+    /**
+     * Display questions by sending them to the Adapter.
+     *
+     * @param questions to display
+     */
+    private fun displayQuestions(questions: MutableList<Question>?) {
+        if(mQuestionsList.visibility == View.GONE) {
+            // Display recycler view and hide empty message
             mEmpty.visibility = View.GONE
             mQuestionsList.visibility = View.VISIBLE
         }
 
-        // Add contacts to the adapter
-        mAdapter?.addQuestions(questions)
+        // Send questions to display in the adapter
+        mAdapter?.displayQuestions(questions)
+    }
+
+    /**
+     * Display download error in the Activity.
+     */
+    fun displayDownloadError() {
+        mActivityInterface.displayDownloadError()
+    }
+
+    fun getRecyclerView(): RecyclerView {
+        return mQuestionsList
     }
 }
